@@ -4,14 +4,16 @@
 #pragma hdrstop
 
 #include "Window.h"
-#include "model.h"
+#include "Model_without_Matrices.h"
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TForm1 *Form1;
-model::Model shape;
 
 using namespace std;
+using namespace model;
+
+TForm1 *Form1;
+static Model_without_Matrices shape;
 
 // ---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner) : TForm(Owner) {
@@ -59,16 +61,16 @@ const float ROTATE_STEP_RAD = 0.1;
 static void adjustTranslate(WORD Key) {
 	switch (Key) {
 	case UP:
-		shape.adjustTranslate(model::Model::axis::Y, -TRANSLATE_STEP);
+		shape.adjustTranslate(axis::Y, -TRANSLATE_STEP);
 		break;
 	case DOWN:
-		shape.adjustTranslate(model::Model::axis::Y, TRANSLATE_STEP);
+		shape.adjustTranslate(axis::Y, TRANSLATE_STEP);
 		break;
 	case LEFT:
-		shape.adjustTranslate(model::Model::axis::X, -TRANSLATE_STEP);
+		shape.adjustTranslate(axis::X, -TRANSLATE_STEP);
 		break;
 	case RIGHT:
-		shape.adjustTranslate(model::Model::axis::X, TRANSLATE_STEP);
+		shape.adjustTranslate(axis::X, TRANSLATE_STEP);
 		break;
 	}
 }
@@ -76,16 +78,16 @@ static void adjustTranslate(WORD Key) {
 static void adjustScale(WORD Key) {
 	switch (Key) {
 	case UP:
-		shape.adjustScale(model::Model::axis::Y, SCALE_STEP);
+		shape.adjustScale(axis::Y, SCALE_STEP);
 		break;
 	case DOWN:
-		shape.adjustScale(model::Model::axis::Y, -SCALE_STEP);
+		shape.adjustScale(axis::Y, -SCALE_STEP);
 		break;
 	case LEFT:
-		shape.adjustScale(model::Model::axis::X, -SCALE_STEP);
+		shape.adjustScale(axis::X, -SCALE_STEP);
 		break;
 	case RIGHT:
-		shape.adjustScale(model::Model::axis::X, SCALE_STEP);
+		shape.adjustScale(axis::X, SCALE_STEP);
 		break;
 	}
 }
