@@ -14,7 +14,7 @@ namespace model {
 	};
 
 	class AbstractModel {
-	protected:
+	private:
 		vector<pair<int, int> >points;
 
 		// transforms the point according to current values
@@ -24,7 +24,6 @@ namespace model {
 		virtual void untransformPoint(pair<int, int>&) const = 0;
 
 	public:
-
 		virtual ~AbstractModel() {};
 
 		virtual void addPoint(int x, int y) {
