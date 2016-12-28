@@ -10,67 +10,27 @@
 using namespace model;
 
 void Model_with_Matrices::adjustTranslate(axis a, int value) {
-	// switch (a) {
-	// case axis::X:
-	// translateValue.first += value;
-	// break;
-	// case axis::Y:
-	// translateValue.second += value;
-	// break;
-	// }
+	transformMatrix[MATRIX_SIZE - 1][a] += value;
 }
 
 void Model_with_Matrices::adjustScale(axis a, float value) {
-	// switch (a) {
-	// case axis::X:
-	// scaleValue.first += value;
-	// break;
-	// case axis::Y:
-	// scaleValue.second += value;
-	// break;
-	// }
+	scale[a] += value;
+	updateTransformMatrix();
 }
 
 void Model_with_Matrices::adjustRotation(float value) {
-	// rotateValue += value;
+	rotateAngleRad += value;
+	updateTransformMatrix();
 }
 
-// myltiplies a vector matrix by a square matrix, the result is in pointMatrix
-// assumes target is initialized to 0's
-void multiplyMatrix(const float(&pointMatrix)[MATRIX_SIZE],
-	const float(&transformMatrix)[MATRIX_SIZE][MATRIX_SIZE],
-	float(&target)[MATRIX_SIZE]) {
+void Model_with_Matrices::transformPoint(pair<int, int> &p) const {
+    // only for readabily
+	const Matrix &m = transformMatrix;
 
-	// generic algorithm, can be optimized by removing loops assuming MATRIX_SIZE == 3
-	for (int i = 0; i < MATRIX_SIZE; i++) {
-		for (int j = 0; j < MATRIX_SIZE; j++) {
-			target[i] += pointMatrix[i] * transformMatrix[j][i];
-		}
-	}
+    // multiply p vector by transform matrix
+	int new_x = p.first * m[0][0] + p.second * m[1][0] + m[2][0];
+	int new_y = p.first * m[0][1] + p.second * m[1][1] + m[2][1];
 
+	p.first = new_x;
+	p.second = new_y;
 }
-
-void Model_with_Matrices::transformPoint(pair<int, int> &point) const {
-	float pointMatrix[MATRIX_SIZE] = {point.first, point.second, 1};
-	float target[MATRIX_SIZE] = {0, 0, 0};
-
-	multiplyMatrix(pointMatrix, transformMatrix, target);
-}
-
-//void Model_with_Matrices::translatePoint(pair<int, int> &point) const {
-//	point.first += translateValue.first;
-//	point.second += translateValue.second;
-//}
-//
-//void Model_with_Matrices::scalePoint(pair<int, int> &point) const {
-//	point.first *= scaleValue.first;
-//	point.second *= scaleValue.second;
-//}
-//
-//void Model_with_Matrices::rotatePoint(pair<int, int> &point) const {
-//	const int x = point.first, y = point.second;
-//	const float sinValue = sin(rotateValue);
-//	const float cosValue = cos(rotateValue);
-//	point.first = x * cosValue - y * sinValue;
-//	point.second = y * cosValue + x * sinValue;
-//}
