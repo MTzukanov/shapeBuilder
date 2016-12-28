@@ -10,31 +10,35 @@
 #pragma resource "*.dfm"
 
 using namespace std;
-using namespace model;
 
 TForm1 *Form1;
-static Model_without_Matrices shape;
 
 // ---------------------------------------------------------------------------
-__fastcall TForm1::TForm1(TComponent* Owner) : TForm(Owner) {
 
+__fastcall TForm1::TForm1(TComponent* Owner) : TForm(Owner) {
+    shape = new Model_without_Matrices;
+}
+
+// ---------------------------------------------------------------------------
+
+__fastcall TForm1::~TForm1() {
+	delete shape;
 }
 
 // ---------------------------------------------------------------------------
 void __fastcall TForm1::FormClick(TObject *Sender) {
-
 	TPoint P;
 	::GetCursorPos(&P);
 	P = ScreenToClient(P);
 
-	shape.addPoint(P.X - this->Width / 2, P.Y - this->Height / 2);
+	shape->addPoint(P.X - this->Width / 2, P.Y - this->Height / 2);
 
 	Form1->Invalidate();
 }
 
 // ---------------------------------------------------------------------------
 void __fastcall TForm1::FormPaint(TObject *Sender) {
-	const vector<pair<int, int> >&v = shape.getTransformedPoints();
+	const vector<pair<int, int> >&v = shape->getTransformedPoints();
 
 	if (v.size()) {
 		Canvas->Brush->Color = clBlue;
@@ -58,7 +62,7 @@ const int TRANSLATE_STEP = 10;
 const float SCALE_STEP = 0.1;
 const float ROTATE_STEP_RAD = 0.1;
 
-static void adjustTranslate(WORD Key) {
+static void adjustTranslate(AbstractModel &shape, WORD Key) {
 	switch (Key) {
 	case UP:
 		shape.adjustTranslate(axis::Y, -TRANSLATE_STEP);
@@ -75,7 +79,7 @@ static void adjustTranslate(WORD Key) {
 	}
 }
 
-static void adjustScale(WORD Key) {
+static void adjustScale(AbstractModel &shape, WORD Key) {
 	switch (Key) {
 	case UP:
 		shape.adjustScale(axis::Y, SCALE_STEP);
@@ -92,7 +96,7 @@ static void adjustScale(WORD Key) {
 	}
 }
 
-static void adjustRotation(WORD Key) {
+static void adjustRotation(AbstractModel &shape, WORD Key) {
 	switch (Key) {
 	case UP:
 		break;
@@ -112,13 +116,13 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
 	TShiftState Shift) {
 
 	if (Shift.Contains(ssShift)) {
-		adjustScale(Key);
+		adjustScale(*shape, Key);
 	}
 	else if (Shift.Contains(ssCtrl)) {
-		adjustRotation(Key);
+		adjustRotation(*shape, Key);
 	}
 	else {
-		adjustTranslate(Key);
+		adjustTranslate(*shape, Key);
 	}
 
 	this->Invalidate();
