@@ -19,6 +19,7 @@ __published:	// IDE-managed Components
 	void __fastcall FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormResize(TObject *Sender);
+	void __fastcall FormDblClick(TObject *Sender);
 private:	// User declarations
 	AbstractModel *shape;
 

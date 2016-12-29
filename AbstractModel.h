@@ -36,6 +36,11 @@ namespace model {
 		virtual void adjustScale(axis, float value) = 0;
 		virtual void adjustRotation(float value) = 0;
 
+		virtual void reset() {
+			points.clear();
+			// TODO: need also to reset space
+		};
+
 		const vector<pair<int, int> >getTransformedPoints() const ;
 	};
 }

@@ -140,3 +140,10 @@ void __fastcall TForm1::FormResize(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TForm1::FormDblClick(TObject *Sender)
+{
+	shape->reset();
+	this->Invalidate();
+}
+//---------------------------------------------------------------------------
+
