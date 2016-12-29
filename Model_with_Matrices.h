@@ -28,15 +28,13 @@ namespace model {
 
 		void transformPoint(pair<int, int>&) const ;
 
-		void untransformPoint(pair<int, int>&point) const {
-			// leaving currently as is, still TODO
-		};
+		void untransformPoint(pair<int, int>&p) const ;
 
 		void updateTransformMatrix() {
-			float cos_a = cos(rotateAngleRad);
-			float sin_a = sin(rotateAngleRad);
+			const float cos_a = cos(rotateAngleRad);
+			const float sin_a = sin(rotateAngleRad);
 			transformMatrix[0][0] = scale[0] * cos_a;
-			transformMatrix[0][1] = scale[0]*(-sin_a);
+			transformMatrix[0][1] = scale[0] * (-sin_a);
 			transformMatrix[1][0] = scale[1] * sin_a;
 			transformMatrix[1][1] = scale[1] * cos_a;
 		};
